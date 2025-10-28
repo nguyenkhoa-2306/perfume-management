@@ -1,0 +1,22 @@
+<%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
+include('../partials/alert') %>
+
+<h2>Register</h2>
+<form action="/register" method="POST">
+  <label>Email:</label>
+  <input type="email" name="email" required /><br />
+  <label>Password:</label>
+  <input type="password" name="password" required /><br />
+  <label>Name:</label>
+  <input type="text" name="name" required /><br />
+  <label>Year of Birth:</label>
+  <input type="number" name="YOB" required /><br />
+  <label>Gender:</label>
+  <select name="gender" required>
+    <option value="true">Male</option>
+    <option value="false">Female</option></select
+  ><br />
+  <button type="submit">Register</button>
+</form>
+
+<%- include('../layouts/footer') %>

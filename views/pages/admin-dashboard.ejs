@@ -1,0 +1,151 @@
+<%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
+include('../partials/alert') %>
+
+<div class="container mt-4">
+  <h2><%= title %></h2>
+
+  <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="tab-perfumes-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#tabPerfumes"
+        type="button"
+        role="tab"
+      >
+        Perfumes
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="tab-brands-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#tabBrands"
+        type="button"
+        role="tab"
+      >
+        Brands
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="tab-users-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#tabUsers"
+        type="button"
+        role="tab"
+      >
+        Users
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3" id="adminTabContent">
+    <!-- Perfumes -->
+    <div class="tab-pane fade show active" id="tabPerfumes" role="tabpanel">
+      <button id="btnAddPerfume" class="btn btn-primary mb-2">
+        Add New Perfume
+      </button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% perfumes.forEach(p => { %>
+          <tr>
+            <td><%= p.perfumeName %></td>
+            <td><%= p.brand.brandName %></td>
+            <td><%= p.price %></td>
+            <td>
+              <button
+                class="btn btn-sm btn-warning btnEditPerfume"
+                data-id="<%= p._id %>"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-sm btn-danger btnDeletePerfume"
+                data-id="<%= p._id %>"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Brands -->
+    <div class="tab-pane fade" id="tabBrands" role="tabpanel">
+      <button id="btnAddBrand" class="btn btn-primary mb-2">
+        Add New Brand
+      </button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Brand Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% brands.forEach(b => { %>
+          <tr>
+            <td><%= b.brandName %></td>
+            <td>
+              <button
+                class="btn btn-sm btn-warning btnEditBrand"
+                data-id="<%= b._id %>"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-sm btn-danger btnDeleteBrand"
+                data-id="<%= b._id %>"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Users -->
+    <div class="tab-pane fade" id="tabUsers" role="tabpanel">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>YOB</th>
+            <th>Gender</th>
+            <th>Is Admin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% members.forEach(m => { %>
+          <tr>
+            <td><%= m.name %></td>
+            <td><%= m.email %></td>
+            <td><%= m.YOB %></td>
+            <td><%= m.gender ? "Male" : "Female" %></td>
+            <td><%= m.isAdmin ? "Yes" : "No" %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

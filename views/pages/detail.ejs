@@ -1,0 +1,43 @@
+<%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
+include('../partials/alert') %>
+
+<h2><%= perfume.perfumeName %></h2>
+<img src="<%= perfume.uri %>" alt="<%= perfume.perfumeName %>" width="250" />
+<p><strong>Brand:</strong> <%= perfume.brand.brandName %></p>
+<p><strong>Description:</strong> <%= perfume.description %></p>
+<p><strong>Price:</strong> $<%= perfume.price %></p>
+<p><strong>Concentration:</strong> <%= perfume.concentration %></p>
+<p><strong>Target Audience:</strong> <%= perfume.targetAudience %></p>
+
+<hr />
+<h3>Feedbacks</h3>
+
+<% if (perfume.comments.length === 0) { %>
+<p>No feedback yet.</p>
+<% } else { %> <% perfume.comments.forEach(c => { %>
+<div style="border: 1px solid #aaa; margin: 5px; padding: 5px">
+  <p>
+    <strong><%= c.author ? c.author.name : "Deleted user" %></strong> ⭐ <%=
+    c.rating %>/5
+  </p>
+  <p><%= c.content %></p>
+  <small><%= new Date(c.createdAt).toLocaleString() %></small>
+</div>
+<% }) %> <% } %>
+
+<hr />
+<% if (user && !hasCommented) { %>
+<form action="/perfumes/<%= perfume._id %>/comment" method="POST">
+  <label>Rating (1–5):</label>
+  <input type="number" name="rating" min="1" max="5" required />
+  <br />
+  <label>Comment:</label>
+  <textarea name="content" rows="3" required></textarea>
+  <br />
+  <button type="submit">Submit Feedback</button>
+</form>
+<% } else if (user && hasCommented) { %>
+<p>You have already commented this perfume ✅</p>
+<% } else { %>
+<p><a href="/login">Login</a> to leave feedback.</p>
+<% } %> <%- include('../layouts/footer') %>

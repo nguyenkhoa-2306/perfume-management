@@ -1,0 +1,15 @@
+<%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
+include('../partials/alert') %>
+
+<h2><%= title %></h2>
+
+<%- include('../partials/search-filter', { brands }) %>
+
+<div>
+  <% if (perfumes.length === 0) { %>
+  <p>No products found. / Không có sản phẩm nào.</p>
+  <% } else { %> <% perfumes.forEach(perfume => { %> <%-
+  include('../partials/perfume-card', { perfume }) %> <% }) %> <% } %>
+</div>
+
+<%- include('../layouts/footer') %>

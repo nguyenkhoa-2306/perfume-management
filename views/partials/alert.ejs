@@ -1,0 +1,9 @@
+<% if (messages && (messages.success.length || messages.error.length)) { %>
+<div>
+  <% if (messages.success.length) { %>
+  <p style="color: green"><%= messages.success %></p>
+  <% } %> <% if (messages.error.length) { %>
+  <p style="color: red"><%= messages.error %></p>
+  <% } %>
+</div>
+<% } %>

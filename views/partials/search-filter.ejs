@@ -1,0 +1,14 @@
+<form method="get" action="/search">
+  <input type="text" name="q" placeholder="Search perfumes..." />
+  <button type="submit">Search</button>
+</form>
+
+<form method="get" action="/filter">
+  <select name="brand">
+    <option value="">All Brands</option>
+    <% brands.forEach(b => { %>
+    <option value="<%= b.brandName %>"><%= b.brandName %></option>
+    <% }) %>
+  </select>
+  <button type="submit">Filter</button>
+</form>

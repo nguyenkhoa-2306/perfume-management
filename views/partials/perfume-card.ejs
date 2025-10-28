@@ -1,0 +1,7 @@
+<div style="border: 1px solid #ccc; padding: 10px; margin: 5px">
+  <img src="<%= perfume.uri %>" alt="<%= perfume.perfumeName %>" width="150" />
+  <h4><a href="/perfumes/<%= perfume._id %>"><%= perfume.perfumeName %></a></h4>
+  <p>Brand: <%= perfume.brand.brandName %></p>
+  <p>Target: <%= perfume.targetAudience %></p>
+  <p>Concentration: <%= perfume.concentration %></p>
+</div>
