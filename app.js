@@ -1,66 +1,56 @@
-require("dotenv").config(); // ✅ ĐẦU TIÊN
+require("dotenv").config();
 
+const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
-const express = require("express");
 const cors = require("cors");
-const { connectDB } = require("./config/database");
 const path = require("path");
+const { connectDB } = require("./config/database");
 
 const app = express();
 
-// DEBUG
-console.log("🔑 JWT_SECRET:", process.env.JWT_SECRET);
-
-// ========== MIDDLEWARE (THỨ TỰ QUAN TRỌNG!) ==========
+// ========== CẤU HÌNH CƠ BẢN ==========
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // ✅ QUAN TRỌNG CHO FORM
+app.use(express.urlencoded({ extended: true }));
 
-// View engine
+// EJS setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Session
+// Session + Flash
 app.use(
   session({
-    secret: process.env.JWT_SECRET,
+    secret: process.env.JWT_SECRET || "secretkey",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: false,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
   })
 );
-
-// Flash messages
 app.use(flash());
 
 // Database
 connectDB();
 
-// ========== ROUTES (CUỐI CÙNG) ==========
+// ========== ROUTES ==========
 const authRoutes = require("./routes/auth");
 const memberRoutes = require("./routes/members");
 const perfumeRoutes = require("./routes/perfumes");
 const brandRoutes = require("./routes/brands");
 const viewRoutes = require("./routes/views");
 
-app.use("/", viewRoutes); // ✅ VIEW ROUTES PHẢI CÓ
+app.use("/", viewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/perfumes", perfumeRoutes);
 app.use("/api/brands", brandRoutes);
 
 // Health check
-app.get("/health", (req, res) => {
-  res.json({ message: "Perfume Management Backend is running" });
-});
+app.get("/health", (req, res) => res.json({ status: "OK" }));
 
 // ========== START SERVER ==========
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
