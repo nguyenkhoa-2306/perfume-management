@@ -1,0 +1,48 @@
+<%- include('../../layouts/main', { 
+  title: 'Admin Dashboard',
+  body: `
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5><i class="fas fa-spray-can"></i> Perfumes</h5>
+                <h2><%= stats.perfumes %></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5><i class="fas fa-copyright"></i> Brands</h5>
+                <h2><%= stats.brands %></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5><i class="fas fa-users"></i> Members</h5>
+                <h2><%= stats.members %></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5><i class="fas fa-comments"></i> Comments</h5>
+                <h2><%= stats.comments %></h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <a href="/admin/brands" class="btn btn-outline-primary w-100 mb-2">Manage Brands</a>
+    </div>
+    <div class="col-md-6">
+        <a href="/admin/perfumes" class="btn btn-outline-success w-100 mb-2">Manage Perfumes</a>
+    </div>
+</div>
+  `
+}) %>
