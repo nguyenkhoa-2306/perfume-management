@@ -1,31 +1,247 @@
-/* OUTSTANDING EXTRAT DESIGN */
+/* ========== NAVBAR STYLING ========== */
+
+/* Navbar general */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Active link */
+.navbar .nav-link.active {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-radius: 0.25rem;
+  color: #ffc107 !important;
+}
+
+/* Welcome text */
+.navbar .nav-link.text-light,
+.navbar .nav-link.text-warning {
+  cursor: default;
+  padding: 0.5rem 1rem;
+}
+
+.navbar .nav-link strong {
+  font-size: 1.05rem;
+}
+
+/* Admin badge */
+.badge.bg-danger {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  vertical-align: middle;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+  min-width: 250px;
+}
+
+.dropdown-header {
+  font-size: 0.875rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.75rem 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  padding-left: 1.75rem;
+  transform: translateX(5px);
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #fff5f5;
+  color: #dc3545 !important;
+}
+
+.dropdown-item i {
+  width: 20px;
+  text-align: center;
+}
+
+/* Nav links hover effect */
+.navbar-nav .nav-link {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffc107 !important;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #ffc107;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 80%;
+}
+
+.navbar-nav .nav-link.active::after {
+  width: 80%;
+}
+
+/* Register button */
+.btn-outline-warning.text-white {
+  border-color: #ffc107;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-warning.text-white:hover {
+  background-color: #ffc107;
+  color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .navbar-nav {
+    padding: 1rem 0;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    border-left: 3px solid transparent;
+  }
+
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link.active {
+    border-left-color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+  }
+
+  .navbar-nav .nav-link::after {
+    display: none;
+  }
+
+  .dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar .nav-link.text-light strong,
+  .navbar .nav-link.text-warning strong {
+    font-size: 0.95rem;
+  }
+
+  .badge.bg-danger {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* ========== EXTRAIT BADGE ========== */
 .extrait-badge {
-    background: linear-gradient(45deg, #FFD700, #FFA500);
-    color: #000;
-    font-weight: bold;
-    animation: shine 2s infinite;
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  color: #000;
+  font-weight: bold;
+  animation: shine 2s infinite;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 @keyframes shine {
-    0% { box-shadow: 0 0 10px #FFD700; }
-    50% { box-shadow: 0 0 20px #FFD700; }
-    100% { box-shadow: 0 0 10px #FFD700; }
+  0% {
+    box-shadow: 0 0 10px #ffd700;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px #ffd700, 0 0 30px #ffa500;
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 10px #ffd700;
+    transform: scale(1);
+  }
 }
 
-/* Perfume Card */
+/* ========== PERFUME CARDS ========== */
 .perfume-card {
-    transition: transform 0.3s;
+  transition: all 0.3s ease;
+  border: none;
 }
+
 .perfume-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Rating Stars */
-.star { color: #ffc107; }
-.star-half { color: #ffc107; }
+.perfume-card img {
+  transition: transform 0.3s ease;
+}
 
-/* Form Styling */
-.form-control:focus {
-    border-color: #FFD700;
-    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+.perfume-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ========== FORM STYLING ========== */
+.form-control:focus,
+.form-select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ========== ALERTS ========== */
+.alert {
+  border-radius: 0.5rem;
+  border: none;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

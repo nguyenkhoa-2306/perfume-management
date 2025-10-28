@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container">
+  <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="/">
       <i class="fas fa-spray-can me-2 text-warning"></i>PerfumeHub
     </a>
@@ -14,104 +14,182 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link <%= path === '/' ? 'active' : '' %>" href="/"
-            ><i class="fas fa-home me-1"></i>Home</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"
-            ><i class="fas fa-spray-can me-1"></i>Perfumes</a
-          >
-        </li>
-        <% if (user && user.isAdmin) { %>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-          >
-            <i class="fas fa-cog me-1"></i>Admin
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="/admin"
-                ><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/admin/brands"
-                ><i class="fas fa-copyright me-2"></i>Brands</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/admin/perfumes"
-                ><i class="fas fa-spray-can me-2"></i>Perfumes</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/admin/collectors"
-                ><i class="fas fa-users me-2"></i>Collectors</a
-              >
-            </li>
-          </ul>
-        </li>
-        <% } %>
-      </ul>
-
-      <!-- USER MENU -->
-      <ul class="navbar-nav">
-        <% if (!user) { %>
-        <li class="nav-item">
-          <a class="nav-link" href="/login"
-            ><i class="fas fa-sign-in-alt me-1"></i>Login</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/register"
-            ><i class="fas fa-user-plus me-1"></i>Register</a
-          >
-        </li>
-        <% } else { %>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-          >
-            <i class="fas fa-user me-1"></i><%= user.name %> <% if
-            (user.isAdmin) { %><span class="badge bg-danger ms-1">Admin</span><%
-            } %>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a class="dropdown-item" href="/profile"
-                ><i class="fas fa-user-edit me-2"></i>Profile</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/change-password"
-                ><i class="fas fa-lock me-2"></i>Password</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="/my-comments"
-                ><i class="fas fa-comments me-2"></i>My Comments</a
-              >
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a class="dropdown-item text-danger" href="/logout"
-                ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
-              >
-            </li>
-          </ul>
-        </li>
-        <% } %>
-      </ul>
+      
+      <!-- ========== KIỂM TRA USER LOGIN ========== -->
+      <% if (typeof user === 'undefined' || !user) { %>
+        <!-- ========== CHƯA ĐĂNG NHẬP ========== -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path === '/' ? 'active' : '' %>" href="/">
+              <i class="fas fa-home me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-spray-can me-1"></i>Perfumes
+            </a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/login">
+              <i class="fas fa-sign-in-alt me-1"></i>Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-warning text-white ms-2" href="/register">
+              <i class="fas fa-user-plus me-1"></i>Register
+            </a>
+          </li>
+        </ul>
+        
+      <% } else if (user.isAdmin) { %>
+        <!-- ========== ADMIN NAVIGATION ========== -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path === '/admin' ? 'active' : '' %>" href="/admin">
+              <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path.includes('/admin/brands') ? 'active' : '' %>" href="/admin/brands">
+              <i class="fas fa-copyright me-1"></i>Brands
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path.includes('/admin/perfumes') ? 'active' : '' %>" href="/admin/perfumes">
+              <i class="fas fa-spray-can me-1"></i>Perfumes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path.includes('/admin/collectors') ? 'active' : '' %>" href="/admin/collectors">
+              <i class="fas fa-users me-1"></i>Collectors
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-store me-1"></i>View Site
+            </a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto">
+          <!-- Welcome Admin -->
+          <li class="nav-item">
+            <span class="nav-link text-warning">
+              <i class="fas fa-user-shield me-1"></i>
+              <strong><%= user.name %></strong>
+              <span class="badge bg-danger ms-1">ADMIN</span>
+            </span>
+          </li>
+          
+          <!-- Admin Dropdown -->
+          <li class="nav-item dropdown">
+            
+             
+              <i class="fas fa-cog"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <h6 class="dropdown-header">
+                  <i class="fas fa-envelope me-2"></i><%= user.email %>
+                </h6>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="/profile">
+                  <i class="fas fa-user-edit me-2 text-primary"></i>My Profile
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/change-password">
+                  <i class="fas fa-key me-2 text-warning"></i>Change Password
+                </a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="/login">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+      <% } else { %>
+        <!-- ========== MEMBER NAVIGATION ========== -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path === '/' ? 'active' : '' %>" href="/">
+              <i class="fas fa-home me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-spray-can me-1"></i>Perfumes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof path !== 'undefined' && path === '/my-comments' ? 'active' : '' %>" href="/my-comments">
+              <i class="fas fa-comments me-1"></i>My Comments
+            </a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto">
+          <!-- Welcome Member -->
+          <li class="nav-item">
+            <span class="nav-link text-light">
+              <i class="fas fa-user-circle me-1 text-warning"></i>
+              Xin chào, <strong class="text-warning"><%= user.name %></strong>
+            </span>
+          </li>
+          
+          <!-- Member Dropdown -->
+          <li class="nav-item dropdown">
+            
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-user-cog"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <h6 class="dropdown-header">
+                  <i class="fas fa-envelope me-2"></i><%= user.email %>
+                </h6>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="/profile">
+                  <i class="fas fa-id-card me-2 text-primary"></i>My Profile
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/change-password">
+                  <i class="fas fa-key me-2 text-warning"></i>Change Password
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/my-comments">
+                  <i class="fas fa-comments me-2 text-info"></i>My Comments
+                </a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="/login">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      <% } %>
+      
     </div>
   </div>
 </nav>
