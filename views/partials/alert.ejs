@@ -21,6 +21,7 @@
           aria-label="Close"
         ></button>
       </div>
+
       <div class="modal-body">
         <% if (messages.success.length) { %>
         <p class="mb-0"><%= messages.success %></p>
@@ -28,6 +29,7 @@
         <p class="mb-0"><%= messages.error %></p>
         <% } %>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
@@ -39,14 +41,19 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const alertModal = new bootstrap.Modal(
-      document.getElementById("alertModal")
-    );
-    alertModal.show();
+    const modalEl = document.getElementById("alertModal");
+    const modal = new bootstrap.Modal(modalEl);
+    const message = "<%= messages.success || messages.error %>";
 
-    setTimeout(() => {
-      alertModal.hide();
-    }, 10000);
+    // 🔥 Nếu message là "Login successful!" thì KHÔNG hiển thị modal
+    if (message.trim() !== "Login successful!") {
+      modal.show();
+
+      // Tự động đóng sau 10s
+      setTimeout(() => {
+        modal.hide();
+      }, 10000);
+    }
   });
 </script>
 <% } %>

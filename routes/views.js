@@ -454,4 +454,89 @@ router.post(
   }
 );
 
+router.post("/admin/brand/add", checkUser, ensureAdmin, async (req, res) => {
+  try {
+    const { brandName } = req.body;
+
+    if (!brandName || brandName.trim() === "") {
+      req.flash("error", "Brand name is required");
+      return res.redirect("/admin");
+    }
+
+    const brand = new Brand({ brandName });
+    await brand.save();
+
+    req.flash("success", "Brand added successfully!");
+    res.redirect("/admin");
+  } catch (error) {
+    console.error("Add brand error:", error);
+    req.flash("error", "Failed to add brand");
+    res.redirect("/admin");
+  }
+});
+
+// ✏️ Sửa thương hiệu
+router.post(
+  "/admin/brand/edit/:id",
+  checkUser,
+  ensureAdmin,
+  async (req, res) => {
+    try {
+      const { brandName } = req.body;
+
+      const brand = await Brand.findByIdAndUpdate(
+        req.params.id,
+        { brandName },
+        { new: true }
+      );
+
+      if (!brand) {
+        req.flash("error", "Brand not found");
+        return res.redirect("/admin");
+      }
+
+      req.flash("success", "Brand updated successfully!");
+      res.redirect("/admin");
+    } catch (error) {
+      console.error("Update brand error:", error);
+      req.flash("error", "Failed to update brand");
+      res.redirect("/admin");
+    }
+  }
+);
+
+// ❌ Xóa thương hiệu (chỉ khi không có Perfume liên kết)
+router.post(
+  "/admin/brand/delete/:id",
+  checkUser,
+  ensureAdmin,
+  async (req, res) => {
+    try {
+      const brandId = req.params.id;
+      const perfumeCount = await Perfume.countDocuments({ brand: brandId });
+
+      if (perfumeCount > 0) {
+        req.flash(
+          "error",
+          `Cannot delete this brand, ${perfumeCount} perfume(s) still linked.`
+        );
+        return res.redirect("/admin");
+      }
+
+      const deleted = await Brand.findByIdAndDelete(brandId);
+      if (!deleted) {
+        req.flash("error", "Brand not found");
+        return res.redirect("/admin");
+      }
+
+      req.flash("success", "Brand deleted successfully!");
+      res.redirect("/admin");
+    } catch (error) {
+      console.error("Delete brand error:", error);
+      req.flash("error", "Failed to delete brand");
+      res.redirect("/admin");
+    }
+  }
+);
+
 module.exports = router;
