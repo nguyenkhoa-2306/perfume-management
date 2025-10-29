@@ -1,14 +1,32 @@
-<form method="get" action="/search">
-  <input type="text" name="q" placeholder="Search perfumes..." />
-  <button type="submit">Search</button>
-</form>
+<div class="row g-3 align-items-end">
+  <!-- Search Form -->
+  <div class="col-12 col-md-6">
+    <form method="get" action="/search" class="input-group shadow-sm">
+      <input
+        type="text"
+        name="q"
+        class="form-control border-0"
+        placeholder="Search perfumes..."
+        aria-label="Search perfumes"
+      />
+      <button class="btn btn-primary fw-semibold" type="submit">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </form>
+  </div>
 
-<form method="get" action="/filter">
-  <select name="brand">
-    <option value="">All Brands</option>
-    <% brands.forEach(b => { %>
-    <option value="<%= b.brandName %>"><%= b.brandName %></option>
-    <% }) %>
-  </select>
-  <button type="submit">Filter</button>
-</form>
+  <!-- Filter Form -->
+  <div class="col-12 col-md-6">
+    <form method="get" action="/filter" class="input-group shadow-sm">
+      <select name="brand" class="form-select border-0">
+        <option value="">All Brands</option>
+        <% brands.forEach(b => { %>
+        <option value="<%= b.brandName %>"><%= b.brandName %></option>
+        <% }) %>
+      </select>
+      <button class="btn btn-outline-secondary fw-semibold" type="submit">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="modal fade" id="modalAddPerfume" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <form
+      action="/admin/perfume/add"
+      method="POST"
+      class="modal-content border-0 shadow-lg rounded-4"
+    >
+      <div class="modal-header btn-primary text-white rounded-top-4">
+        <h5 class="modal-title fw-bold">Add New Perfume</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="perfumeName"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Brand</label>
+            <select class="form-select" name="brand" required>
+              <option value="">Select Brand</option>
+              <% brands.forEach(b => { %>
+              <option value="<%= b._id %>"><%= b.brandName %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Price ($)</label>
+            <input type="number" class="form-control" name="price" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Volume (ml)</label>
+            <input type="number" class="form-control" name="volume" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Concentration</label>
+            <input type="text" class="form-control" name="concentration" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Target Audience</label>
+            <input type="text" class="form-control" name="targetAudience" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Ingredients</label>
+            <input type="text" class="form-control" name="ingredients" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Image URL</label>
+            <input type="text" class="form-control" name="uri" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea
+              class="form-control"
+              name="description"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn fw-semibold btn-primary w-100">
+          <h5 class="text-white">
+            <i class="bi bi-plus-circle me-1"></i> Save Perfume
+          </h5>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

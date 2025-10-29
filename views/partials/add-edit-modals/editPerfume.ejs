@@ -1,0 +1,123 @@
+<div class="modal fade" id="modalEditPerfume" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <form
+      method="POST"
+      class="modal-content border-0 shadow-lg rounded-4"
+      id="editPerfumeForm"
+    >
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title fw-bold">Edit Perfume</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editPerfumeName"
+              name="perfumeName"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Brand</label>
+            <select
+              class="form-select"
+              id="editPerfumeBrand"
+              name="brand"
+              required
+            >
+              <% brands.forEach(b => { %>
+              <option value="<%= b._id %>"><%= b.brandName %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Price ($)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="editPerfumePrice"
+              name="price"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Volume (ml)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="editPerfumeVolume"
+              name="volume"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Concentration</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editPerfumeConcentration"
+              name="concentration"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Target Audience</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editPerfumeTarget"
+              name="targetAudience"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Ingredients</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editPerfumeIngredients"
+              name="ingredients"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Image URL</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editPerfumeUri"
+              name="uri"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea
+              class="form-control"
+              id="editPerfumeDescription"
+              name="description"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary fw-semibold w-100">
+          <i class="bi bi-pencil-square me-1"></i> Update Perfume
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

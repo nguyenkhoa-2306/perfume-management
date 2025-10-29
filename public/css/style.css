@@ -1,0 +1,26 @@
+.hover-card {
+  transition: all 0.3s ease;
+}
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+input::placeholder {
+  color: #aaa !important;
+}
+.input-group .form-control:focus,
+.input-group .form-select:focus {
+  box-shadow: none !important;
+  border-color: #ced4da !important;
+}
+body {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}

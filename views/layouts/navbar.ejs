@@ -1,6 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">PerfumeHub Admin</a>
+<nav
+  class="navbar navbar-expand-lg navbar-dark shadow-sm"
+  style="background: linear-gradient(90deg, #6f42c1, #d63384)"
+>
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
+      <i class="fa fa-diamond me-2 text-warning"></i> PerfumeHub
+    </a>
+
+    <!-- Mobile toggle -->
     <button
       class="navbar-toggler"
       type="button"
@@ -12,23 +20,77 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Menu items -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <% if (user) { %>
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-        <% if (user.isAdmin) { %>
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <% if (user) { %> <% if (user.isAdmin) { %>
         <li class="nav-item">
-          <a class="nav-link" href="/admin">Dashboard</a>
+          <a class="nav-link px-3" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="/admin">Dashboard</a>
         </li>
         <% } %>
-        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle px-3 d-flex align-items-center"
+            href="#"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fa fa-user-circle me-1"></i>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-sm"
+            aria-labelledby="userDropdown"
+          >
+            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item text-danger" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </li>
         <% } else { %>
-        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
         <li class="nav-item">
-          <a class="nav-link" href="/register">Register</a>
+          <a class="nav-link px-3" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="btn btn-outline-light ms-lg-2 mt-2 mt-lg-0 px-3 py-1"
+            href="/register"
+          >
+            <i class="fa fa-user-plus me-1"></i> Register
+          </a>
         </li>
         <% } %>
       </ul>
     </div>
   </div>
 </nav>
+
+<style>
+  .navbar {
+    background: linear-gradient(90deg, #6f42c1, #d63384);
+  }
+  .navbar-brand {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-link {
+    color: #ffffffff !important;
+    transition: all 0.3s ease;
+  }
+  .nav-link:hover {
+    color: #ffe082 !important;
+    transform: translateY(-1px);
+  }
+  .btn-outline-light:hover {
+    background-color: #fff;
+    color: #6f42c1 !important;
+  }
+</style>

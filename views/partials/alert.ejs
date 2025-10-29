@@ -1,9 +1,52 @@
 <% if (messages && (messages.success.length || messages.error.length)) { %>
-<div>
-  <% if (messages.success.length) { %>
-  <p style="color: green"><%= messages.success %></p>
-  <% } %> <% if (messages.error.length) { %>
-  <p style="color: red"><%= messages.error %></p>
-  <% } %>
+<div
+  class="modal fade"
+  id="alertModal"
+  tabindex="-1"
+  aria-labelledby="alertModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div
+        class="modal-header <%= messages.success.length ? 'bg-success' : 'bg-danger' %> text-white"
+      >
+        <h5 class="modal-title" id="alertModalLabel">
+          <%= messages.success.length ? 'Success' : 'Error' %>
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <% if (messages.success.length) { %>
+        <p class="mb-0"><%= messages.success %></p>
+        <% } %> <% if (messages.error.length) { %>
+        <p class="mb-0"><%= messages.error %></p>
+        <% } %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertModal = new bootstrap.Modal(
+      document.getElementById("alertModal")
+    );
+    alertModal.show();
+
+    setTimeout(() => {
+      alertModal.hide();
+    }, 10000);
+  });
+</script>
 <% } %>

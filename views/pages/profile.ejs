@@ -2,19 +2,100 @@
 <%- include('../layouts/navbar') %>
 <%- include('../partials/alert') %>
 
-<h2>My Profile</h2>
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
 
-<form action="/profile" method="POST">
-  <label>Name:</label>
-  <input type="text" name="name" value="<%= member.name %>" required /><br>
-  <label>Year of Birth:</label>
-  <input type="number" name="YOB" value="<%= member.YOB %>" required /><br>
-  <label>Gender:</label>
-  <select name="gender">
-    <option value="true" <%= member.gender ? "selected" : "" %>>Male</option>
-    <option value="false" <%= !member.gender ? "selected" : "" %>>Female</option>
-  </select><br>
-  <button type="submit">Update Profile</button>
-</form>
+  .profile-container {
+    max-width: 500px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    margin: 40px auto;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 
-<%- include('../layouts/footer') %>
+  .profile-container h2 {
+    text-align: center;
+    font-weight: 700;
+    color: #6f42c1;
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .form-control, .form-select {
+    border-radius: 8px;
+    box-shadow: none;
+    border-color: #dee2e6;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #d63384;
+    box-shadow: 0 0 0 0.2rem rgba(214, 51, 132, 0.25);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(90deg, #6f42c1, #d63384);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 0;
+    transition: 0.3s ease;
+    width: 100%;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+  }
+</style>
+
+<div class="container mb-5">
+  <div class="profile-container">
+    <h2><i class="bi bi-person-circle"></i> My Profile</h2>
+
+    <form action="/profile" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          value="<%= member.name %>"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Year of Birth</label>
+        <input
+          type="number"
+          name="YOB"
+          class="form-control"
+          value="<%= member.YOB %>"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Gender</label>
+        <select name="gender" class="form-select">
+          <option value="true" <%= member.gender ? "selected" : "" %>>Male</option>
+          <option value="false" <%= !member.gender ? "selected" : "" %>>Female</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-gradient">
+        <i class="bi bi-save"></i> Update Profile
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="fixed-bottom"><%- include('../layouts/footer') %></div>

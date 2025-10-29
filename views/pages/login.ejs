@@ -1,15 +1,83 @@
-<%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
-include('../partials/alert') %>
+<%- include('../layouts/header') %> <%- include('../partials/alert') %>
 
-<h2>Login</h2>
-<form action="/login" method="POST">
-  <label>Email:</label>
-  <input type="email" name="email" required /><br />
-  <label>Password:</label>
-  <input type="password" name="password" required /><br />
-  <button type="submit">Login</button>
-</form>
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 80vh"
+>
+  <div
+    class="card shadow-lg border-0 rounded-4 p-4"
+    style="max-width: 400px; width: 100%"
+  >
+    <h3 class="text-center mb-4 fw-bold text-primary">Login</h3>
 
-<p>Don't have an account? <a href="/register">Register here</a>.</p>
+    <form action="/login" method="POST">
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="form-control"
+          placeholder="Enter your email..."
+          required
+        />
+      </div>
 
-<%- include('../layouts/footer') %>
+      <!-- Password with show/hide -->
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <div class="input-group">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="form-control"
+            placeholder="Enter your password..."
+            required
+          />
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            id="togglePassword"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary fw-semibold">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Login
+        </button>
+      </div>
+    </form>
+
+    <hr class="my-4" />
+
+    <p class="text-center mb-0">
+      Don't have an account?
+      <a href="/register" class="text-decoration-none fw-semibold text-primary">
+        Register here</a
+      >
+    </p>
+  </div>
+</div>
+
+<script>
+  const togglePassword = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("password");
+
+  togglePassword.addEventListener("click", () => {
+    const type =
+      passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+
+    // Đổi icon
+    togglePassword.innerHTML =
+      type === "password"
+        ? '<i class="bi bi-eye"></i>'
+        : '<i class="bi bi-eye-slash"></i>';
+  });
+</script>

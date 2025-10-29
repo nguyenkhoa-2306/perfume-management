@@ -78,6 +78,45 @@ router.get("/perfumes/:id", checkUser, async (req, res) => {
   }
 });
 
+router.post("/perfumes/:id/comment", checkUser, async (req, res) => {
+  try {
+    // ID nước hoa
+    const perfumeId = req.params.id;
+    const { rating, content } = req.body;
+
+    const perfume = await Perfume.findById(perfumeId);
+    if (!perfume) {
+      req.flash("error", "Perfume not found");
+      return res.redirect(`/perfumes/${perfumeId}`);
+    }
+
+    const userId = req.session.user.id;
+
+    const existingComment = perfume.comments.find(
+      (c) => c.author.toString() === userId
+    );
+    if (existingComment) {
+      req.flash("error", "You already commented this perfume");
+      return res.redirect(`/perfumes/${perfumeId}`);
+    }
+
+    // Thêm comment
+    perfume.comments.push({
+      rating,
+      content,
+      author: userId,
+    });
+    await perfume.save();
+
+    req.flash("success", "Comment added!");
+    return res.redirect(`/perfumes/${perfumeId}`);
+  } catch (error) {
+    console.error("Add comment error:", error);
+    req.flash("error", "Could not add comment");
+    return res.redirect(`/perfumes/${req.params.id}`);
+  }
+});
+
 // Search
 router.get("/search", checkUser, async (req, res) => {
   try {
@@ -233,6 +272,36 @@ router.get("/profile", checkUser, async (req, res) => {
   }
 });
 
+router.post("/profile", checkUser, async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+
+  try {
+    const { name, YOB, gender } = req.body;
+    const userId = req.session.user.id;
+
+    // Tìm user trong DB
+    const member = await Member.findById(userId);
+    if (!member) {
+      req.flash("error", "User not found");
+      return res.redirect("/profile");
+    }
+
+    // Cập nhật thông tin, không cho thay email hoặc password
+    member.name = name;
+    member.YOB = parseInt(YOB);
+    member.gender = gender === "true";
+
+    await member.save();
+
+    req.flash("success", "Profile updated successfully!");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Update profile error:", error);
+    req.flash("error", "Failed to update profile");
+    res.redirect("/profile");
+  }
+});
+
 router.get("/logout", (req, res) => {
   req.session.destroy(() => res.redirect("/"));
 });
@@ -257,5 +326,132 @@ router.get("/admin", checkUser, ensureAdmin, async (req, res) => {
     res.redirect("/");
   }
 });
+
+/* --------------------------- PERFUME CRUD --------------------------- */
+
+// ➕ Thêm nước hoa
+router.post("/admin/perfume/add", checkUser, ensureAdmin, async (req, res) => {
+  try {
+    const {
+      perfumeName,
+      brand,
+      price,
+      description,
+      concentration,
+      targetAudience,
+      uri,
+      ingredients,
+      volume,
+    } = req.body;
+
+    // Kiểm tra dữ liệu
+    if (
+      !perfumeName ||
+      !brand ||
+      !price ||
+      !concentration ||
+      !targetAudience ||
+      !uri ||
+      !ingredients ||
+      !volume
+    ) {
+      req.flash("error", "All perfume fields are required");
+      return res.redirect("/admin");
+    }
+
+    const perfume = new Perfume({
+      perfumeName,
+      brand,
+      price,
+      description: description || "",
+      concentration,
+      targetAudience,
+      uri,
+      ingredients,
+      volume,
+    });
+
+    await perfume.save();
+    req.flash("success", "Perfume added successfully!");
+    res.redirect("/admin");
+  } catch (error) {
+    console.error("Add perfume error:", error);
+    req.flash("error", "Failed to add perfume");
+    res.redirect("/admin");
+  }
+});
+
+// ✏️ Sửa nước hoa
+router.post(
+  "/admin/perfume/edit/:id",
+  checkUser,
+  ensureAdmin,
+  async (req, res) => {
+    try {
+      const {
+        perfumeName,
+        brand,
+        price,
+        description,
+        concentration,
+        targetAudience,
+        uri,
+        ingredients,
+        volume,
+      } = req.body;
+
+      const updatedPerfume = await Perfume.findByIdAndUpdate(
+        req.params.id,
+        {
+          perfumeName,
+          brand,
+          price,
+          description: description || "",
+          concentration,
+          targetAudience,
+          uri,
+          ingredients,
+          volume,
+        },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedPerfume) {
+        req.flash("error", "Perfume not found");
+        return res.redirect("/admin");
+      }
+
+      req.flash("success", "Perfume updated successfully!");
+      res.redirect("/admin");
+    } catch (error) {
+      console.error("Update perfume error:", error);
+      req.flash("error", "Failed to update perfume");
+      res.redirect("/admin");
+    }
+  }
+);
+
+// ❌ Xóa nước hoa
+router.post(
+  "/admin/perfume/delete/:id",
+  checkUser,
+  ensureAdmin,
+  async (req, res) => {
+    try {
+      const deleted = await Perfume.findByIdAndDelete(req.params.id);
+      if (!deleted) {
+        req.flash("error", "Perfume not found");
+        return res.redirect("/admin");
+      }
+
+      req.flash("success", "Perfume deleted successfully!");
+      res.redirect("/admin");
+    } catch (error) {
+      console.error("Delete perfume error:", error);
+      req.flash("error", "Failed to delete perfume");
+      res.redirect("/admin");
+    }
+  }
+);
 
 module.exports = router;

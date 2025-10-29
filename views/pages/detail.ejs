@@ -1,43 +1,134 @@
 <%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
 include('../partials/alert') %>
 
-<h2><%= perfume.perfumeName %></h2>
-<img src="<%= perfume.uri %>" alt="<%= perfume.perfumeName %>" width="250" />
-<p><strong>Brand:</strong> <%= perfume.brand.brandName %></p>
-<p><strong>Description:</strong> <%= perfume.description %></p>
-<p><strong>Price:</strong> $<%= perfume.price %></p>
-<p><strong>Concentration:</strong> <%= perfume.concentration %></p>
-<p><strong>Target Audience:</strong> <%= perfume.targetAudience %></p>
+<div class="container py-5 mb-5">
+  <div class="mb-3">
+    <a
+      href="javascript:history.back()"
+      class="btn btn-outline-secondary rounded-pill shadow-sm px-4"
+    >
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+  </div>
+  <!-- Perfume Image -->
+  <div class="card shadow-sm mb-4 text-center">
+    <div class="card-body">
+      <h3 class="mb-3"><%= perfume.perfumeName %></h3>
+      <img
+        src="<%= perfume.uri %>"
+        alt="<%= perfume.perfumeName %>"
+        class="img-fluid rounded"
+        style="max-height: 400px; object-fit: cover"
+      />
+    </div>
+  </div>
 
-<hr />
-<h3>Feedbacks</h3>
+  <!-- Perfume Information -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h4 class="mb-3">Perfume Details</h4>
+      <p><strong>Brand:</strong> <%= perfume.brand.brandName %></p>
+      <p><strong>Description:</strong> <%= perfume.description %></p>
+      <p><strong>Price:</strong> $<%= perfume.price %></p>
+      <p><strong>Concentration:</strong> <%= perfume.concentration %></p>
+      <p><strong>Target Audience:</strong> <%= perfume.targetAudience %></p>
+      <p><strong>Ingredients:</strong> <%= perfume.ingredients %></p>
+      <p><strong>Volume:</strong> <%= perfume.volume %> ml</p>
+    </div>
+  </div>
 
-<% if (perfume.comments.length === 0) { %>
-<p>No feedback yet.</p>
-<% } else { %> <% perfume.comments.forEach(c => { %>
-<div style="border: 1px solid #aaa; margin: 5px; padding: 5px">
-  <p>
-    <strong><%= c.author ? c.author.name : "Deleted user" %></strong> ⭐ <%=
-    c.rating %>/5
-  </p>
-  <p><%= c.content %></p>
-  <small><%= new Date(c.createdAt).toLocaleString() %></small>
+  <!-- Feedback Section -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="mb-4">Customer Feedback</h4>
+
+      <% if (perfume.comments.length === 0) { %>
+      <p class="text-muted">No feedback yet.</p>
+      <% } else { %> <% perfume.comments.forEach(c => { %>
+      <div class="border rounded p-3 mb-3">
+        <p class="mb-1">
+          <strong><%= c.author ? c.author.name : "Deleted user" %></strong>
+          <span class="text-warning">
+            <% for (let i = 1; i <= 5; i++) { %>
+            <i class="fa<%= i <= c.rating ? ' fa-star' : ' fa-star-o' %>"></i>
+            <% } %>
+          </span>
+        </p>
+        <p class="mb-1"><%= c.content %></p>
+        <small class="text-muted"
+          ><%= new Date(c.createdAt).toLocaleString() %></small
+        >
+      </div>
+      <% }) %> <% } %>
+
+      <hr />
+
+      <% if (user && !hasCommented) { %>
+      <form
+        action="/perfumes/<%= perfume._id %>/comment"
+        method="POST"
+        class="mt-3"
+      >
+        <div class="mb-3">
+          <label class="form-label">Your Rating</label>
+          <div id="star-rating" class="mb-2">
+            <% for (let i = 1; i <= 5; i++) { %>
+            <i
+              class="fa fa-star-o fa-2x text-warning me-1 star"
+              data-value="<%= i %>"
+            ></i>
+            <% } %>
+          </div>
+          <input type="hidden" name="rating" id="rating" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Comment</label>
+          <textarea
+            name="content"
+            class="form-control"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          Submit Feedback
+        </button>
+      </form>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const stars = document.querySelectorAll(".star");
+          const ratingInput = document.getElementById("rating");
+
+          stars.forEach((star) => {
+            star.addEventListener("click", () => {
+              const value = star.getAttribute("data-value");
+              ratingInput.value = value;
+
+              // reset all stars
+              stars.forEach((s) => s.classList.remove("fa-star"));
+              stars.forEach((s) => s.classList.add("fa-star-o"));
+
+              // fill stars up to selected value
+              for (let i = 0; i < value; i++) {
+                stars[i].classList.remove("fa-star-o");
+                stars[i].classList.add("fa-star");
+              }
+            });
+          });
+        });
+      </script>
+      <% } else if (user && hasCommented) { %>
+      <div class="alert alert-success mt-3">
+        You have already commented on this perfume ✅
+      </div>
+      <% } else { %>
+      <p class="mt-3">
+        <a href="/login" class="text-decoration-none">Login</a> to leave
+        feedback.
+      </p>
+      <% } %>
+    </div>
+  </div>
 </div>
-<% }) %> <% } %>
-
-<hr />
-<% if (user && !hasCommented) { %>
-<form action="/perfumes/<%= perfume._id %>/comment" method="POST">
-  <label>Rating (1–5):</label>
-  <input type="number" name="rating" min="1" max="5" required />
-  <br />
-  <label>Comment:</label>
-  <textarea name="content" rows="3" required></textarea>
-  <br />
-  <button type="submit">Submit Feedback</button>
-</form>
-<% } else if (user && hasCommented) { %>
-<p>You have already commented this perfume ✅</p>
-<% } else { %>
-<p><a href="/login">Login</a> to leave feedback.</p>
-<% } %> <%- include('../layouts/footer') %>
+<div class="fixed"><%- include('../layouts/footer') %></div>

@@ -1,61 +1,100 @@
 <%- include('../layouts/header') %> <%- include('../layouts/navbar') %> <%-
 include('../partials/alert') %>
 
-<div class="container mt-4">
-  <h2><%= title %></h2>
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .admin-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 30px;
+  }
+
+  .nav-tabs .nav-link {
+    font-weight: 600;
+    border: none;
+    color: #ffffff;
+  }
+
+  .nav-tabs .nav-link.active {
+    background: linear-gradient(90deg, #6f42c1, #d63384);
+    color: #ffffff;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .table thead {
+    background-color: #6f42c1;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #6f42c1, #d63384);
+    border: none;
+  }
+</style>
+
+<div class="container admin-container mb-5">
+  <h2></i> Admin Dashboard</h2>
+  <p class="text-muted mb-4">Manage perfumes, brands, and users.</p>
 
   <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-    <li class="nav-item" role="presentation">
+    <li class="nav-item">
       <button
         class="nav-link active"
-        id="tab-perfumes-tab"
         data-bs-toggle="tab"
         data-bs-target="#tabPerfumes"
         type="button"
-        role="tab"
       >
-        Perfumes
+        <span class="text-black">Perfumes</span>
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item">
       <button
         class="nav-link"
-        id="tab-brands-tab"
         data-bs-toggle="tab"
         data-bs-target="#tabBrands"
         type="button"
-        role="tab"
       >
-        Brands
+        <span class="text-black">Brands</span>
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item">
       <button
         class="nav-link"
-        id="tab-users-tab"
         data-bs-toggle="tab"
         data-bs-target="#tabUsers"
         type="button"
-        role="tab"
       >
-        Users
+        <span class="text-black">Users</span>
       </button>
     </li>
   </ul>
 
-  <div class="tab-content mt-3" id="adminTabContent">
-    <!-- Perfumes -->
-    <div class="tab-pane fade show active" id="tabPerfumes" role="tabpanel">
-      <button id="btnAddPerfume" class="btn btn-primary mb-2">
-        Add New Perfume
-      </button>
-      <table class="table table-striped">
+  <div class="tab-content mt-3">
+    <!-- PERFUME TAB -->
+    <div class="tab-pane fade show active" id="tabPerfumes">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-secondary mb-0">Perfume List</h5>
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#modalAddPerfume"
+        >
+          <i class="bi bi-plus-circle"></i> Add New Perfume
+        </button>
+      </div>
+
+      <table class="table table-striped table-hover align-middle">
         <thead>
           <tr>
             <th>Name</th>
             <th>Brand</th>
-            <th>Price</th>
-            <th>Actions</th>
+            <th>Price ($)</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -64,19 +103,36 @@ include('../partials/alert') %>
             <td><%= p.perfumeName %></td>
             <td><%= p.brand.brandName %></td>
             <td><%= p.price %></td>
-            <td>
+            <td class="text-center">
               <button
                 class="btn btn-sm btn-warning btnEditPerfume"
                 data-id="<%= p._id %>"
+                data-name="<%= p.perfumeName %>"
+                data-brand="<%= p.brand._id %>"
+                data-price="<%= p.price %>"
+                data-description="<%= p.description %>"
+                data-concentration="<%= p.concentration %>"
+                data-target="<%= p.targetAudience %>"
+                data-uri="<%= p.uri %>"
+                data-ingredients="<%= p.ingredients %>"
+                data-volume="<%= p.volume %>"
               >
-                Edit
+                <i class="bi bi-pencil-square"></i>
               </button>
-              <button
-                class="btn btn-sm btn-danger btnDeletePerfume"
-                data-id="<%= p._id %>"
+
+              <form
+                action="/admin/perfume/delete/<%= p._id %>"
+                method="POST"
+                class="d-inline"
               >
-                Delete
-              </button>
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-danger"
+                  onclick="return confirm('Delete this perfume?')"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
             </td>
           </tr>
           <% }) %>
@@ -84,35 +140,52 @@ include('../partials/alert') %>
       </table>
     </div>
 
-    <!-- Brands -->
-    <div class="tab-pane fade" id="tabBrands" role="tabpanel">
-      <button id="btnAddBrand" class="btn btn-primary mb-2">
-        Add New Brand
-      </button>
-      <table class="table table-striped">
+    <!-- BRAND TAB -->
+    <div class="tab-pane fade" id="tabBrands">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-secondary mb-0">Brand List</h5>
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#modalAddBrand"
+        >
+          <i class="bi bi-plus-circle"></i> Add New Brand
+        </button>
+      </div>
+
+      <table class="table table-striped table-hover align-middle">
         <thead>
           <tr>
             <th>Brand Name</th>
-            <th>Actions</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           <% brands.forEach(b => { %>
           <tr>
             <td><%= b.brandName %></td>
-            <td>
+            <td class="text-center">
               <button
                 class="btn btn-sm btn-warning btnEditBrand"
                 data-id="<%= b._id %>"
+                data-name="<%= b.brandName %>"
               >
-                Edit
+                <i class="bi bi-pencil-square"></i>
               </button>
-              <button
-                class="btn btn-sm btn-danger btnDeleteBrand"
-                data-id="<%= b._id %>"
+
+              <form
+                action="/admin/brand/delete/<%= b._id %>"
+                method="POST"
+                class="d-inline"
               >
-                Delete
-              </button>
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-danger"
+                  onclick="return confirm('Delete this brand?')"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
             </td>
           </tr>
           <% }) %>
@@ -120,9 +193,10 @@ include('../partials/alert') %>
       </table>
     </div>
 
-    <!-- Users -->
-    <div class="tab-pane fade" id="tabUsers" role="tabpanel">
-      <table class="table table-striped">
+    <!-- USERS TAB -->
+    <div class="tab-pane fade" id="tabUsers">
+      <h5 class="fw-bold text-secondary mb-3">User Accounts</h5>
+      <table class="table table-striped table-hover align-middle">
         <thead>
           <tr>
             <th>Name</th>
@@ -139,7 +213,7 @@ include('../partials/alert') %>
             <td><%= m.email %></td>
             <td><%= m.YOB %></td>
             <td><%= m.gender ? "Male" : "Female" %></td>
-            <td><%= m.isAdmin ? "Yes" : "No" %></td>
+            <td><%= m.isAdmin ? "✅" : "❌" %></td>
           </tr>
           <% }) %>
         </tbody>
@@ -148,4 +222,54 @@ include('../partials/alert') %>
   </div>
 </div>
 
-<%- include('../layouts/footer') %>
+<%- include('../partials/add-edit-modals/addPerfume', { brands }) %> <%-
+include('../partials/add-edit-modals/editPerfume', { brands }) %> <%-
+include('../partials/add-edit-modals/addBrand') %> <%-
+include('../partials/add-edit-modals/editBrand') %>
+
+<script>
+  // Edit Perfume (now includes ingredients & volumn)
+  document.querySelectorAll(".btnEditPerfume").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const form = document.getElementById("editPerfumeForm");
+      if (form) form.action = `/admin/perfume/edit/${id}`;
+
+      const setIf = (id, value) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.value = value ?? "";
+      };
+
+      setIf("editPerfumeName", btn.dataset.name);
+      setIf("editPerfumeBrand", btn.dataset.brand);
+      setIf("editPerfumePrice", btn.dataset.price);
+      setIf("editPerfumeDescription", btn.dataset.description);
+      setIf("editPerfumeConcentration", btn.dataset.concentration);
+      setIf("editPerfumeTarget", btn.dataset.target);
+      setIf("editPerfumeUri", btn.dataset.uri);
+
+      // ✅ NEW fields
+      setIf("editPerfumeIngredients", btn.dataset.ingredients);
+      setIf("editPerfumeVolume", btn.dataset.volume);
+
+      const modalEl = document.getElementById("modalEditPerfume");
+      if (modalEl) new bootstrap.Modal(modalEl).show();
+    });
+  });
+
+  // Edit Brand (unchanged)
+  document.querySelectorAll(".btnEditBrand").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const form = document.getElementById("editBrandForm");
+      if (form) form.action = `/admin/brand/edit/${id}`;
+      const nameEl = document.getElementById("editBrandName");
+      if (nameEl) nameEl.value = btn.dataset.name ?? "";
+      const modalEl = document.getElementById("modalEditBrand");
+      if (modalEl) new bootstrap.Modal(modalEl).show();
+    });
+  });
+</script>
+
+<div class="fixed-bottom"><%- include('../layouts/footer') %></div>

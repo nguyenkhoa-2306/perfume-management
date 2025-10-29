@@ -1,0 +1,37 @@
+<div class="modal fade" id="modalAddBrand" tabindex="-1">
+  <div class="modal-dialog">
+    <form
+      action="/admin/brand/add"
+      method="POST"
+      class="modal-content border-0 shadow-lg rounded-4"
+    >
+      <div class="modal-header btn-primary text-white rounded-top-4">
+        <h5 class="modal-title fw-bold">Add New Brand</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Brand Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="brandName"
+            placeholder="Enter brand name..."
+            required
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary fw-semibold w-100">
+          <i class="bi bi-plus-circle me-1"></i> Save Brand
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
