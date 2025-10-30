@@ -24,14 +24,7 @@
     <!-- Menu items -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <% if (user) { %> <% if (user.isAdmin) { %>
-        <li class="nav-item">
-          <a class="nav-link px-3" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link px-3" href="/admin">Dashboard</a>
-        </li>
-        <% } %>
+        <% if (user) { %>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle px-3 d-flex align-items-center"
@@ -48,6 +41,9 @@
             aria-labelledby="userDropdown"
           >
             <li><a class="dropdown-item" href="/profile">Profile</a></li>
+            <% if (user.isAdmin) { %>
+            <li><a class="dropdown-item" href="/admin">Dashboard</a></li>
+            <% } %>
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item text-danger" href="/logout">Logout</a>
